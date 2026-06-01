@@ -11,16 +11,12 @@ import Dashboard from "./pages/Dashboard";
 import Landing from "./pages/Landing";
 import LearnPage from "./pages/Learn";
 import Connect from "./pages/Connect";
+import GameShell from "./components/layout/GameShell";
 import { useWalletStore } from "./store/useWalletStore";
 
 function App() {
   const [showNewsRibbon, setShowNewsRibbon] = useState(true);
   const isWalletConnected = useWalletStore((s) => s.publicKey !== null && s.publicKey !== "");
-  const contentPadding = isWalletConnected
-    ? showNewsRibbon
-      ? "pt-32 lg:pt-44"
-      : "pt-24 lg:pt-32"
-    : "pt-0";
 
   return (
     <ThemeProvider>
@@ -29,10 +25,7 @@ function App() {
       {showNewsRibbon && (
         <NewsRibbon onClose={() => setShowNewsRibbon(false)} />
       )}
-      <main
-        id="main-content"
-        className={`px-4 lg:px-14 min-h-screen bg-[#FAFAFA] dark:bg-gray-900 transition-[padding] ${contentPadding}`}
-      >
+      <GameShell showNewsRibbon={showNewsRibbon}>
         <Routes>
           <Route
             path="/"
@@ -45,14 +38,8 @@ function App() {
             }
           />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route
-            path="/learn"
-            element={<LearnPage />}
-          />
-          <Route
-            path="/connect"
-            element={<Connect />}
-          />
+          <Route path="/learn" element={<LearnPage />} />
+          <Route path="/connect" element={<Connect />} />
           <Route
             path="/pools"
             element={
@@ -62,7 +49,7 @@ function App() {
             }
           />
         </Routes>
-      </main>
+      </GameShell>
       <Toaster richColors position="top-center" />
     </ThemeProvider>
   );
