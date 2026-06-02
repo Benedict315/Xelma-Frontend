@@ -226,8 +226,12 @@ describe('Dashboard', () => {
     it('shows the live game stats panel instead of the static player placeholder', () => {
       render(<Dashboard />);
 
+
       expect(screen.getByTestId('live-game-stats-panel')).toBeInTheDocument();
       expect(screen.queryByText('142 Playing Now')).not.toBeInTheDocument();
+
+      expect(screen.getByText('142')).toBeInTheDocument();
+
     });
   });
 

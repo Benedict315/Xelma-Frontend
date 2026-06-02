@@ -9,6 +9,7 @@ import { useWalletStore, selectIsWalletConnected } from "../store/useWalletStore
 import { predictionsApi, ApiError } from "../lib/api-client";
 import { ConnectionStatus } from "../components/ConnectionStatus";
 import { useConnectionStatus } from "../hooks/useConnectionStatus";
+import { HudStatusRow } from "../components/hud/HudStatusRow";
 import ProfileSummaryCard from "../components/ProfileSummaryCard";
 import LiveGameStatsPanel from "../components/LiveGameStatsPanel";
 
@@ -90,6 +91,9 @@ const Dashboard = ({ showNewsRibbon = true }: DashboardProps) => {
       <ChatSidebar showNewsRibbon={showNewsRibbon} />
 
       <div className="flex-1 ml-0 md:ml-80 transition-[margin] duration-300 ease-in-out p-4 lg:p-6">
+        {/* HUD status row */}
+        <HudStatusRow playerCount={142} className="mb-4" />
+
         {/* Connection Status Banner */}
         {(!isSocketConnected || (sseConnection && sseConnection.status !== 'connected')) && (
           <div className="mb-4">
@@ -119,7 +123,7 @@ const Dashboard = ({ showNewsRibbon = true }: DashboardProps) => {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Center: Prediction controls (Issue: core prediction area) */}
+          {/* Prediction controls */}
           <div className="dashboard__center lg:col-span-1 flex flex-col gap-6">
             <ProfileSummaryCard />
             <PredictionCard
@@ -131,14 +135,19 @@ const Dashboard = ({ showNewsRibbon = true }: DashboardProps) => {
             />
           </div>
 
+
           {/* Right: Price chart and live stats */}
+          {/* Price chart + prediction history */}
+
           <div className="lg:col-span-2 flex flex-col gap-6">
-            {/* Price Chart */}
             <div className="min-h-[350px] bg-white dark:bg-gray-800 p-6 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700">
               <PriceChart height={280} />
             </div>
 
+
             <LiveGameStatsPanel />
+
+
 
             <PredictionHistory userId={publicKey} />
           </div>
