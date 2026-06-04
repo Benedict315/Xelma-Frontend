@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useTheme } from "next-themes";
 import WalletConnect from "./WalletConnect";
@@ -6,6 +6,7 @@ import NotificationsBell from "./NotificationsBell";
 import Logo from "../assets/logo.svg";
 import ProfileSettingsModal from "./ProfileSettingsModal";
 import { useProfileStore } from "../store/useProfileStore";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 import { ConnectionIndicator } from "./ConnectionStatus";
 
 interface Routes {
@@ -18,6 +19,15 @@ const Header = () => {
   const { theme, setTheme } = useTheme();
   const [profileOpen, setProfileOpen] = useState(false);
   const profile = useProfileStore((s) => s.profile);
+  const mobileNavRef = useRef<HTMLDivElement | null>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useFocusTrap(mobileNavRef, {
+    active: open,
+    onEscape: () => setOpen(false),
+    restoreFocus: true,
+    restoreFocusRef: mobileMenuButtonRef,
+  });
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -156,9 +166,11 @@ const Header = () => {
           </button>
           <button
             type="button"
+            ref={mobileMenuButtonRef}
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-primary-nav"
+            aria-haspopup="dialog"
             aria-label={open ? "Close menu" : "Open menu"}
             className="relative h-10 w-10 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C4BFD] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
           >
@@ -188,9 +200,12 @@ const Header = () => {
       {open && (
         <div
           id="mobile-primary-nav"
-          className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 transition-colors"
-          role="region"
+          ref={mobileNavRef}
+          className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 px-4 pb-4 transition-colors"
+          role="dialog"
+          aria-modal="true"
           aria-label="Mobile navigation"
+          tabIndex={-1}
         >
           {/* Navigation links */}
           <nav aria-label="Main navigation" className="px-4 pt-4">
