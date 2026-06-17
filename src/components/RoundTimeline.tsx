@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import type { Round } from '../lib/api-client';
 import { useRoundStore } from '../store/useRoundStore';
 
 interface TimelineState {
@@ -17,7 +18,7 @@ const TIMELINE_STATES: TimelineState[] = [
  * Determines the current round state based on the active round and SSE connection
  */
 function getCurrentRoundState(
-  activeRound: any | null,
+  activeRound: Round | null,
   isRoundActive: boolean,
   sseStatus: string
 ): 'upcoming' | 'live' | 'resolving' | 'finished' | 'loading' | 'disconnected' {

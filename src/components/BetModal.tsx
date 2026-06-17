@@ -19,14 +19,6 @@ export default function BetModal({ round, open, onClose }: BetModalProps) {
   const [amount, setAmount] = useState('100');
 
   useEffect(() => {
-    if (!open) {
-      setDirection(null);
-      setPrecisionPrice('');
-      setAmount('100');
-    }
-  }, [open]);
-
-  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };

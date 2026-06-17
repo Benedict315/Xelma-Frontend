@@ -73,7 +73,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <BetModal round={selectedRound} open={modalOpen} onClose={closePredictionModal} />
+      <BetModal
+        key={selectedRound ? `${selectedRound.id}-${modalOpen ? 'open' : 'closed'}` : 'none'}
+        round={selectedRound}
+        open={modalOpen}
+        onClose={closePredictionModal}
+      />
     </div>
   );
 }
