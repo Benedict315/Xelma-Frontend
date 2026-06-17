@@ -1,57 +1,51 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "./components/ThemeProvider";
-import "./App.css";
-import Header from "./components/Header";
-import NewsRibbon from "./components/NewsRibbon";
-import Leaderboard from "./components/Leaderboard";
-import RouteProgressBar from "./components/RouteProgressBar";
-import { Toaster } from "sonner";
-import Dashboard from "./pages/Dashboard";
-import Landing from "./pages/Landing";
-import LearnPage from "./pages/Learn";
-import Connect from "./pages/Connect";
-import GameShell from "./components/layout/GameShell";
-import { useWalletStore } from "./store/useWalletStore";
+import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import Navbar from './components/Navbar';
+import Landing from './pages/Landing';
+import Dashboard from './pages/Dashboard';
+import LegacyDashboard from './pages/LegacyDashboard';
+import Leaderboard from './components/Leaderboard';
+import LearnPage from './pages/Learn';
+import Connect from './pages/Connect';
 
 function App() {
-  const [showNewsRibbon, setShowNewsRibbon] = useState(true);
-  const isWalletConnected = useWalletStore((s) => s.publicKey !== null && s.publicKey !== "");
-
   return (
-    <ThemeProvider>
-      <RouteProgressBar />
-      <Header />
-      {showNewsRibbon && (
-        <NewsRibbon onClose={() => setShowNewsRibbon(false)} />
-      )}
-      <GameShell showNewsRibbon={showNewsRibbon}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              isWalletConnected ? (
-                <Dashboard showNewsRibbon={showNewsRibbon} />
-              ) : (
-                <Landing showNewsRibbon={showNewsRibbon} />
-              )
-            }
-          />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/learn" element={<LearnPage />} />
-          <Route path="/connect" element={<Connect />} />
-          <Route
-            path="/pools"
-            element={
-              <div className="text-center mt-20 text-2xl font-bold text-[#9B9B9B]">
-                Pools Page Placeholder
-              </div>
-            }
-          />
-        </Routes>
-      </GameShell>
-      <Toaster richColors position="top-center" />
-    </ThemeProvider>
+    <div className="min-h-screen bg-[#0A0F1A] font-sans text-[#F3F4F6]">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/play" element={<LegacyDashboard />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/learn" element={<LearnPage />} />
+        <Route path="/connect" element={<Connect />} />
+        <Route
+          path="/pools"
+          element={
+            <div className="xelma-grid-bg px-4 py-20 text-center text-xl font-bold text-gray-500">
+              Pools — Coming Soon
+            </div>
+          }
+        />
+        <Route
+          path="/tournament"
+          element={
+            <div className="xelma-grid-bg px-4 py-20 text-center text-xl font-bold text-gray-500">
+              Tournament — Coming Soon
+            </div>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <div className="xelma-grid-bg px-4 py-20 text-center text-xl font-bold text-gray-500">
+              Profile — Coming Soon
+            </div>
+          }
+        />
+      </Routes>
+      <Toaster richColors position="top-center" theme="dark" />
+    </div>
   );
 }
 

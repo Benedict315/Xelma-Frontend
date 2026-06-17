@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import Dashboard from './Dashboard';
+import Dashboard from './LegacyDashboard';
 
 function selectFromStore<TStore extends object>(selector: unknown, store: TStore) {
   return typeof selector === 'function' ? (selector as (state: TStore) => unknown)(store) : store;
@@ -170,6 +170,7 @@ describe('Dashboard', () => {
       fetchActiveRound: vi.fn(),
       subscribeToRoundEvents: vi.fn(() => vi.fn()),
       dismissResolvedRound: vi.fn(),
+    });
     Object.assign(mockWalletStore, {
       status: 'connected',
       publicKey: 'GTEST123',
